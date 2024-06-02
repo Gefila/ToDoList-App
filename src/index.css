@@ -31,3 +31,9 @@
 		opacity: 1;
 	}
 }
+
+@layer components{
+	.input{
+		@apply px-3 py-2 rounded-md text-black border-indigo-600 border-2 focus:outline-none focus:border-indigo-900;
+	}
+}

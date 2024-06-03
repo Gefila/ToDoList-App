@@ -1,5 +1,11 @@
 import { useState } from "react";
 import "./index.css";
+import {
+	FaEdit,
+	FaRegCheckSquare,
+	FaRegSquare,
+	FaTrashAlt,
+} from "react-icons/fa";
 
 function App() {
 	const [showModal, setShowModal] = useState(false);
@@ -64,11 +70,13 @@ function App() {
 									<label htmlFor="" className="text-xl">
 										Deskripsi
 									</label>
-									<input
-										type="text"
+									<textarea
+										name=""
+										id=""
 										placeholder="Masukkan Deskripsi"
 										className="input"
-									/>
+										maxLength={150}
+									></textarea>
 								</div>
 								<div className="flex flex-col">
 									<label htmlFor="" className="text-xl">
@@ -110,6 +118,25 @@ function App() {
 					</div>
 				)}
 
+				<div className="w-full  mt-2">
+					<div className="flex flex-col bg-slate-600 px-3 py-2 justify-start items-start rounded-lg border relative">
+						<div className="flex items-start justify-between w-full">
+							<p className="text-2xl">Ngoding</p>
+							<p className="">1 Mei 2024</p>
+						</div>
+						<p className="text-sm mt-1 text-justify min-h-20">
+							Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fugiat,
+							similique.
+						</p>
+						<div className="flex items-center gap-2 bg-slate-800 px-2 py-3 rounded-md absolute left-1/2 transform -translate-x-1/2 -bottom-4">
+							<FaRegCheckSquare />
+							<FaRegSquare />
+
+							<FaEdit size={"1.1rem"}/>
+							<FaTrashAlt />
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	);

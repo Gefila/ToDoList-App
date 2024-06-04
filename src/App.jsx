@@ -46,7 +46,7 @@ function App() {
 					</select>
 				</div>
 				{showModal && (
-					<div className="fixed backdrop-blur-sm top-0 left-0 right-0 bottom-0 flex items-center justify-center">
+					<div className="fixed backdrop-blur-sm top-0 left-0 right-0 bottom-0 flex items-center justify-center z-50 ">
 						<div
 							className={`bg-indigo-500 xl:w-1/2 w-9/12 rounded-lg ${
 								closeModal ? "scale-in-center" : ""
@@ -118,20 +118,19 @@ function App() {
 					</div>
 				)}
 
-				<div className="w-full  mt-2">
+				<div className="w-full mt-2">
 					<div className="flex flex-col bg-slate-600 px-3 py-2 justify-start items-start rounded-lg border relative">
 						<div className="flex items-start justify-between w-full">
 							<p className="text-2xl">Ngoding</p>
 							<p className="">1 Mei 2024</p>
 						</div>
-						<p className="text-sm mt-1 text-justify min-h-20">
+						<p className="text-sm mt-1 text-justify min-h-16">
 							Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fugiat,
 							similique.
 						</p>
-						<div className="flex items-center gap-2 bg-slate-800 px-2 py-3 rounded-md absolute left-1/2 transform -translate-x-1/2 -bottom-4">
-							<FaRegCheckSquare />
+						<div className="flex items-center gap-2 bg-slate-800 px-2 py-3 rounded-md absolute left-1/2 transform -translate-x-1/2 -bottom-5">
+							{/* <FaRegCheckSquare /> */}
 							<FaRegSquare />
-
 							<FaEdit size={"1.1rem"}/>
 							<FaTrashAlt />
 						</div>

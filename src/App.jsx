@@ -10,8 +10,9 @@ import {
 function App() {
 	const [showModal, setShowModal] = useState(false);
 	const [isClosing, setIsClosing] = useState(false);
-	const [isEditing, setIsEditing] = useState(false);
-	const [task, setTask] = useState("");
+	const [editTask, setEditTask] = useState(false);
+	const [editId, setEditId] = useState("");
+	const [taskTitle, setTaskTitle] = useState("");
 	const [description, setDescription] = useState("");
 	const [date, setDate] = useState("");
 	const [priority, setPriority] = useState("");
@@ -45,18 +46,44 @@ function App() {
 
 	function handleAddTask(e) {
 		e.preventDefault();
-		setTasks([
-			...tasks,
-			{
-				id: +new Date(),
-				task,
-				description,
-				date: date ? date : "No Date",
-				status: false,
-				priority,
-			},
-		]);
-		console.log(tasks);
+		if (!taskTitle) {
+			alert("Task tidak boleh kosong");
+			return;
+		}
+		if (editTask) {
+			setTasks(
+				tasks.map((task) =>
+					task.id === editId
+						? {
+								...task,
+								task: taskTitle,
+								description,
+								date: date ? date : "No Date",
+								priority,
+						}
+						: task
+				)
+			);
+			setEditTask(false);
+			setTaskTitle("");
+			setDescription("");
+			setDate("");
+			setPriority("");
+			console.log("Task Edited");
+		} else {
+			setTasks([
+				...tasks,
+				{
+					id: +new Date(),
+					task: taskTitle,
+					description,
+					date: date ? date : "No Date",
+					status: false,
+					priority,
+				},
+			]);
+			console.log("Task Added");
+		}
 	}
 
 	function handleDeleteTask(id) {
@@ -74,11 +101,28 @@ function App() {
 		);
 	}
 
+	function handleEditTask(id) {
+		setEditTask(true);
+		setShowModal(true);
+		const task = tasks.find((task) => task.id === id);
+		setTaskTitle(task.task);
+		setDescription(task.description);
+		setDate(task.date);
+		setPriority(task.priority);
+		setEditId(id);
+	}
+
 	function closeModal() {
 		setIsClosing(true);
 		setTimeout(() => {
 			setShowModal(false);
 			setIsClosing(false);
+			setEditTask(false);
+
+			setTaskTitle("");
+			setDescription("");
+			setDate("");
+			setPriority("");
 		}, 250);
 	}
 
@@ -116,7 +160,7 @@ function App() {
 							} ${isClosing ? "scale-out-center" : ""}`}
 						>
 							<h1 className="text-center py-3 text-lg font-bold">
-								Masukkan TODO
+								{!editTask ? "Masukkan" : "Edit"} TODO
 							</h1>
 							<form className="px-5 pb-5 flex flex-col gap-3">
 								<div className="flex flex-col">
@@ -127,7 +171,8 @@ function App() {
 										type="text"
 										placeholder="Masukkan Task"
 										className="input"
-										onChange={(e) => setTask(e.target.value)}
+										onChange={(e) => setTaskTitle(e.target.value)}
+										value={taskTitle}
 									/>
 								</div>
 								<div className="flex flex-col">
@@ -141,6 +186,7 @@ function App() {
 										className="input"
 										maxLength={150}
 										onChange={(e) => setDescription(e.target.value)}
+										value={description}
 									></textarea>
 								</div>
 								<div className="flex flex-col">
@@ -152,6 +198,7 @@ function App() {
 										placeholder="Masukkan Deskripsi"
 										className="input"
 										onChange={(e) => setDate(e.target.value)}
+										value={date}
 									/>
 								</div>
 								<div className="flex flex-col">
@@ -163,6 +210,7 @@ function App() {
 										id=""
 										className="input"
 										onChange={(e) => setPriority(e.target.value)}
+										value={priority}
 									>
 										<option value="1" selected disabled>
 											Select Task Priority
@@ -220,18 +268,21 @@ function App() {
 								) : (
 									<FaRegSquare onClick={() => handleStatusTask(task.id)} />
 								)}
-								<FaEdit size={"1.1rem"} />
+								<FaEdit
+									size={"1.1rem"}
+									onClick={() => handleEditTask(task.id)}
+								/>
 								<FaTrashAlt onClick={() => handleDeleteTask(task.id)} />
 							</div>
 							<div className="flex justify-end w-full">
 								<p
-									className={`text-sm text-center bg-${
+									className={`text-sm text-center text-white rounded-md p-1 border w-1/4 font-bold ${
 										task.priority === "low"
-											? "green"
+											? "bg-green-500"
 											: task.priority === "medium"
-											? "yellow"
-											: "red"
-									}-500 text-white rounded-md p-1 border w-1/4 font-bold`}
+											? "bg-amber-500"
+											: "bg-red-500"
+									}`}
 								>
 									{task.priority}
 								</p>

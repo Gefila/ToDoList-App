@@ -10,6 +10,39 @@ import {
 function App() {
 	const [showModal, setShowModal] = useState(false);
 	const [isClosing, setIsClosing] = useState(false);
+	const [isEditing, setIsEditing] = useState(false)
+	const [task, setTask] = useState("");
+	const [description, setDescription] = useState("");
+	const [date, setDate] = useState("");
+	const [priority, setPriority] = useState("");
+
+	const [tasks, setTasks] = useState([])
+
+	function handleAddTask(e) {
+		e.preventDefault();
+		setTasks([...tasks, {
+			id: +new Date(),
+			task,
+			description,
+			date,
+			status: false,
+			priority
+		}])
+		console.log(tasks)
+	}
+
+	function handleDeleteTask(id) {
+		setTasks(tasks.filter(task => task.id !== id))
+	}
+
+	function handleStatusTask(id) {
+		setTasks(tasks.map(task => {
+			if (task.id === id) {
+				task.status = !task.status
+			}
+			return task
+		}))
+	}
 
 	function closeModal() {
 		setIsClosing(true);
@@ -18,6 +51,8 @@ function App() {
 			setIsClosing(false);
 		}, 250);
 	}
+
+	
 
 	return (
 		<div className="w-full h-screen bg-indigo-950 p-5 text-white flex justify-center items-start">
@@ -48,9 +83,8 @@ function App() {
 				{showModal && (
 					<div className="fixed backdrop-blur-sm top-0 left-0 right-0 bottom-0 flex items-center justify-center z-50 ">
 						<div
-							className={`bg-indigo-500 xl:w-1/2 w-9/12 rounded-lg ${
-								closeModal ? "scale-in-center" : ""
-							} ${isClosing ? "scale-out-center" : ""}`}
+							className={`bg-indigo-500 xl:w-1/2 w-9/12 rounded-lg ${closeModal ? "scale-in-center" : ""
+								} ${isClosing ? "scale-out-center" : ""}`}
 						>
 							<h1 className="text-center py-3 text-lg font-bold">
 								Masukkan TODO
@@ -64,6 +98,7 @@ function App() {
 										type="text"
 										placeholder="Masukkan Task"
 										className="input"
+										onChange={e => setTask(e.target.value)}
 									/>
 								</div>
 								<div className="flex flex-col">
@@ -76,6 +111,7 @@ function App() {
 										placeholder="Masukkan Deskripsi"
 										className="input"
 										maxLength={150}
+										onChange={e => setDescription(e.target.value)}
 									></textarea>
 								</div>
 								<div className="flex flex-col">
@@ -86,13 +122,14 @@ function App() {
 										type="datetime-local"
 										placeholder="Masukkan Deskripsi"
 										className="input"
+										onChange={e => setDate(e.target.value)}
 									/>
 								</div>
 								<div className="flex flex-col">
 									<label htmlFor="" className="text-xl">
 										Task Priority
 									</label>
-									<select name="" id="" className="input">
+									<select name="" id="" className="input" onChange={e => setPriority(e.target.value)}>
 										<option value="1" selected disabled>
 											Select Task Priority
 										</option>
@@ -109,7 +146,10 @@ function App() {
 									>
 										Cancel
 									</button>
-									<button className="bg-indigo-700 px-4 py-2 w-full rounded-md hover:bg-indigo-800">
+									<button className="bg-indigo-700 px-4 py-2 w-full rounded-md hover:bg-indigo-800" type="submit" onClick={(e) => {
+										handleAddTask(e)
+										closeModal()
+									}}>
 										Add Task
 									</button>
 								</div>
@@ -118,23 +158,30 @@ function App() {
 					</div>
 				)}
 
+				{/* TASK */}
 				<div className="w-full mt-2">
-					<div className="flex flex-col bg-slate-600 px-3 py-2 justify-start items-start rounded-lg border relative">
-						<div className="flex items-start justify-between w-full">
-							<p className="text-2xl">Ngoding</p>
-							<p className="">1 Mei 2024</p>
-						</div>
-						<p className="text-sm mt-1 text-justify min-h-16">
-							Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fugiat,
-							similique.
-						</p>
-						<div className="flex items-center gap-2 bg-slate-800 px-2 py-3 rounded-md absolute left-1/2 transform -translate-x-1/2 -bottom-5">
-							{/* <FaRegCheckSquare /> */}
-							<FaRegSquare />
-							<FaEdit size={"1.1rem"}/>
-							<FaTrashAlt />
-						</div>
-					</div>
+					{
+						tasks.map((task) => (
+							<div className="flex flex-col bg-slate-600 px-3 py-2 justify-start items-start rounded-lg border relative mb-8" id={task.id}>
+								<div className="flex items-start justify-between w-full">
+									<p className="text-2xl">{task.task}</p>
+									<p className="">{task.date}</p>
+								</div>
+								<p className="text-sm mt-1 text-justify min-h-16">
+									{task.description}
+								</p>
+								<div className="flex items-center gap-2 bg-slate-800 px-2 py-3 rounded-md absolute left-1/2 transform -translate-x-1/2 -bottom-5">
+									{task.status ? (
+										<FaRegCheckSquare onClick={e => handleStatusTask(task.id)} />
+									) : (
+										<FaRegSquare onClick={e => handleStatusTask(task.id)} />
+									)}
+									<FaEdit size={"1.1rem"} />
+									<FaTrashAlt onClick={() => handleDeleteTask(task.id)} />
+								</div>
+							</div>
+						))
+					}
 				</div>
 			</div>
 		</div>

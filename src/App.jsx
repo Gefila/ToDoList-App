@@ -15,14 +15,14 @@ function App() {
 	const [taskTitle, setTaskTitle] = useState("");
 	const [description, setDescription] = useState("");
 	const [date, setDate] = useState("");
-	const [priority, setPriority] = useState("");
+	const [priority, setPriority] = useState("1");
 
 	const [tasks, setTasks] = useState([
 		{
 			id: 1,
 			task: "Makan",
 			description: "Makan siang jam 12",
-			date: "2021-09-01T12:00",
+			date: "Kamis, 06 Jun 2024, 17.20 WIB",
 			status: false,
 			priority: "low",
 		},
@@ -30,7 +30,7 @@ function App() {
 			id: 2,
 			task: "Minum",
 			description: "Minum air putih",
-			date: "2021-09-01T12:00",
+			date: "Kamis, 06 Jun 2024, 17.20 WIB",
 			status: false,
 			priority: "medium",
 		},
@@ -38,7 +38,7 @@ function App() {
 			id: 3,
 			task: "Tidur",
 			description: "Tidur jam 8 malam",
-			date: "2021-09-01T12:00",
+			date: "Kamis, 06 Jun 2024, 17.20 WIB",
 			status: false,
 			priority: "high",
 		},
@@ -58,7 +58,17 @@ function App() {
 								...task,
 								task: taskTitle,
 								description,
-								date: date ? date : "No Date",
+								date: date ? date : new Date(date).toLocaleString("id-ID",{
+									weekday: "long",
+									year: "numeric",
+									month: "short",
+									day: "2-digit",
+									hour: "2-digit",
+									minute: "2-digit",
+									hour12: false,
+									timeZone: "Asia/Jakarta",
+									timeZoneName: "short",
+							}),
 								priority,
 						}
 						: task
@@ -77,7 +87,29 @@ function App() {
 					id: +new Date(),
 					task: taskTitle,
 					description,
-					date: date ? date : "No Date",
+					date: date
+						? new Date(date).toLocaleString("id-ID", {
+								weekday: "long",
+								year: "numeric",
+								month: "short",
+								day: "2-digit",
+								hour: "2-digit",
+								minute: "2-digit",
+								hour12: false,
+								timeZone: "Asia/Jakarta",
+								timeZoneName: "short",
+						})
+						: new Date(Date.now()).toLocaleString("id-ID", {
+							weekday: "long",
+							year: "numeric",
+							month: "short",
+							day: "2-digit",
+							hour: "2-digit",
+							minute: "2-digit",
+							hour12: false,
+							timeZone: "Asia/Jakarta",
+							timeZoneName: "short",
+					}),
 					status: false,
 					priority,
 				},
@@ -164,10 +196,11 @@ function App() {
 							</h1>
 							<form className="px-5 pb-5 flex flex-col gap-3">
 								<div className="flex flex-col">
-									<label htmlFor="" className="text-xl">
+									<label htmlFor="task" className="text-xl">
 										Task
 									</label>
 									<input
+										id="task"
 										type="text"
 										placeholder="Masukkan Task"
 										className="input"
@@ -176,12 +209,11 @@ function App() {
 									/>
 								</div>
 								<div className="flex flex-col">
-									<label htmlFor="" className="text-xl">
-										Deskripsi
+									<label htmlFor="description" className="text-xl">
+										Description
 									</label>
 									<textarea
-										name=""
-										id=""
+										id="description"
 										placeholder="Masukkan Deskripsi"
 										className="input"
 										maxLength={150}
@@ -190,10 +222,11 @@ function App() {
 									></textarea>
 								</div>
 								<div className="flex flex-col">
-									<label htmlFor="" className="text-xl">
-										Date
+									<label htmlFor="date" className="text-xl">
+										Date (Optional)
 									</label>
 									<input
+										id="date"
 										type="datetime-local"
 										placeholder="Masukkan Deskripsi"
 										className="input"
@@ -202,12 +235,11 @@ function App() {
 									/>
 								</div>
 								<div className="flex flex-col">
-									<label htmlFor="" className="text-xl">
+									<label htmlFor="priority" className="text-xl">
 										Task Priority
 									</label>
 									<select
-										name=""
-										id=""
+										id="priority"
 										className="input"
 										onChange={(e) => setPriority(e.target.value)}
 										value={priority}
@@ -245,10 +277,10 @@ function App() {
 				)}
 
 				{/* TASK */}
-				<div className="w-full mt-2">
+				<div className="w-full mt-2 flex flex-col items-center justify-start">
 					{tasks.map((task) => (
 						<div
-							className="flex flex-col bg-blue-950 px-3 py-2 justify-start items-start rounded-lg border-2 relative mb-8"
+							className="flex flex-col bg-blue-950 pl-3 pr-6 py-2 justify-start items-start rounded-lg border-2 relative mb-8 w-[90%]"
 							key={task.id}
 						>
 							<div
@@ -256,13 +288,13 @@ function App() {
 									task.status ? "line-through" : ""
 								}`}
 							>
-								<p className="text-2xl">{task.task}</p>
-								<p className="">{task.date}</p>
+								<p className="text-2xl break-all">{task.task}</p>
 							</div>
-							<p className="text-sm mt-1 text-justify min-h-12">
+							<p className="text-sm mt-1 text-justify min-h-7 w-full break-all">
 								{task.description}
 							</p>
-							<div className="flex items-center gap-2 bg-slate-800 px-2 py-3 rounded-md absolute left-1/2 transform -translate-x-1/2 -bottom-5 border-2">
+
+							<div className="flex flex-col items-center gap-2 bg-slate-800 px-2 py-3 rounded-md border-2 absolute -right-5 transform top-1/2 -translate-y-1/2">
 								{task.status ? (
 									<FaRegCheckSquare onClick={() => handleStatusTask(task.id)} />
 								) : (
@@ -274,7 +306,8 @@ function App() {
 								/>
 								<FaTrashAlt onClick={() => handleDeleteTask(task.id)} />
 							</div>
-							<div className="flex justify-end w-full">
+							<div className="flex justify-between w-full items-center">
+								<p className="text-[0.8rem]">{task.date}</p>
 								<p
 									className={`text-sm text-center text-white rounded-md p-1 border w-1/4 font-bold ${
 										task.priority === "low"

@@ -22,7 +22,7 @@ function App() {
 			id: 1,
 			task: "Makan",
 			description: "Makan siang jam 12",
-			date: "Kamis, 06 Jun 2024, 17.20 WIB",
+			date: "2011-10-05T14:48:00",
 			status: false,
 			priority: "low",
 		},
@@ -30,7 +30,7 @@ function App() {
 			id: 2,
 			task: "Minum",
 			description: "Minum air putih",
-			date: "Kamis, 06 Jun 2024, 17.20 WIB",
+			date: "2022-10-05T14:48:00",
 			status: false,
 			priority: "medium",
 		},
@@ -38,7 +38,7 @@ function App() {
 			id: 3,
 			task: "Tidur",
 			description: "Tidur jam 8 malam",
-			date: "Kamis, 06 Jun 2024, 17.20 WIB",
+			date: "2022-10-05T14:48:00",
 			status: false,
 			priority: "high",
 		},
@@ -58,27 +58,13 @@ function App() {
 								...task,
 								task: taskTitle,
 								description,
-								date: date ? date : new Date(date).toLocaleString("id-ID",{
-									weekday: "long",
-									year: "numeric",
-									month: "short",
-									day: "2-digit",
-									hour: "2-digit",
-									minute: "2-digit",
-									hour12: false,
-									timeZone: "Asia/Jakarta",
-									timeZoneName: "short",
-							}),
+								date: date,
 								priority,
 						}
 						: task
 				)
 			);
 			setEditTask(false);
-			setTaskTitle("");
-			setDescription("");
-			setDate("");
-			setPriority("");
 			console.log("Task Edited");
 		} else {
 			setTasks([
@@ -87,29 +73,7 @@ function App() {
 					id: +new Date(),
 					task: taskTitle,
 					description,
-					date: date
-						? new Date(date).toLocaleString("id-ID", {
-								weekday: "long",
-								year: "numeric",
-								month: "short",
-								day: "2-digit",
-								hour: "2-digit",
-								minute: "2-digit",
-								hour12: false,
-								timeZone: "Asia/Jakarta",
-								timeZoneName: "short",
-						})
-						: new Date(Date.now()).toLocaleString("id-ID", {
-							weekday: "long",
-							year: "numeric",
-							month: "short",
-							day: "2-digit",
-							hour: "2-digit",
-							minute: "2-digit",
-							hour12: false,
-							timeZone: "Asia/Jakarta",
-							timeZoneName: "short",
-					}),
+					date: date ? date : Date.now(),
 					status: false,
 					priority,
 				},
@@ -160,7 +124,7 @@ function App() {
 
 	return (
 		<div className="w-full min-h-screen bg-indigo-950 p-5 text-white flex justify-center items-start">
-			<div className="flex justify-center flex-col items-center bg-indigo-900 p-3 w-full xl:w-1/2 rounded-lg">
+			<div className="flex justify-center flex-col items-center bg-indigo-900 p-3 w-full lg:w-4/12 rounded-lg">
 				<div className="py-3 bg-indigo-700 w-full text-center rounded-t-md">
 					<h1 className="text-white">ToDoList App</h1>
 				</div>
@@ -268,7 +232,7 @@ function App() {
 											closeModal();
 										}}
 									>
-										Add Task
+										{!editTask ? "Add Task" : "Edit Task"}
 									</button>
 								</div>
 							</form>
@@ -307,7 +271,19 @@ function App() {
 								<FaTrashAlt onClick={() => handleDeleteTask(task.id)} />
 							</div>
 							<div className="flex justify-between w-full items-center">
-								<p className="text-[0.8rem]">{task.date}</p>
+								<p className="text-[0.8rem]">
+									{new Date(task.date).toLocaleString("id-ID", {
+										weekday: "long",
+										year: "numeric",
+										month: "short",
+										day: "2-digit",
+										hour: "2-digit",
+										minute: "2-digit",
+										hour12: false,
+										timeZone: "Asia/Jakarta",
+										timeZoneName: "short",
+									})}
+								</p>
 								<p
 									className={`text-sm text-center text-white rounded-md p-1 border w-1/4 font-bold ${
 										task.priority === "low"

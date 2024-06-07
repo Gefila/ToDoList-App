@@ -1,11 +1,4 @@
-import { useState } from "react";
-
-export default function Form({ showModal, isClosing, editTask}) {
-	const [taskTitle, setTaskTitle] = useState("");
-	const [description, setDescription] = useState("");
-	const [date, setDate] = useState("");
-	const [priority, setPriority] = useState("1");
-
+export default function Form({ showModal, closeModal, handleAddTask, taskTitle, setTaskTitle, description, setDescription, date, setDate, priority, setPriority, editTask, isClosing}) {
 	return (
 		<div className="fixed backdrop-blur-sm top-0 left-0 right-0 bottom-0 flex items-center justify-center z-50 ">
 			<div

@@ -1,4 +1,18 @@
-export default function Form({ showModal, closeModal, handleAddTask, taskTitle, setTaskTitle, description, setDescription, date, setDate, priority, setPriority, editTask, isClosing}) {
+export default function Form({
+	showModal,
+	closeModal,
+	handleAddTask,
+	taskTitle,
+	setTaskTitle,
+	description,
+	setDescription,
+	date,
+	setDate,
+	priority,
+	setPriority,
+	isEditTask,
+	isClosing,
+}) {
 	return (
 		<div className="fixed backdrop-blur-sm top-0 left-0 right-0 bottom-0 flex items-center justify-center z-50 ">
 			<div
@@ -7,7 +21,7 @@ export default function Form({ showModal, closeModal, handleAddTask, taskTitle, 
 				} ${isClosing ? "scale-out-center" : ""}`}
 			>
 				<h1 className="text-center py-3 text-lg font-bold">
-					{!editTask ? "Masukkan" : "Edit"} TODO
+					{!isEditTask ? "Masukkan" : "Edit"} TODO
 				</h1>
 				<form className="px-5 pb-5 flex flex-col gap-3">
 					<div className="flex flex-col">
@@ -46,7 +60,11 @@ export default function Form({ showModal, closeModal, handleAddTask, taskTitle, 
 							placeholder="Masukkan Deskripsi"
 							className="input"
 							onChange={(e) => setDate(e.target.value)}
-							value={date}
+							value={
+								Number.isInteger(date)
+									? new Date(date).toISOString().slice(0, 19)
+									: date
+							}
 						/>
 					</div>
 					<div className="flex flex-col">
@@ -83,7 +101,7 @@ export default function Form({ showModal, closeModal, handleAddTask, taskTitle, 
 								closeModal();
 							}}
 						>
-							{!editTask ? "Add Task" : "Edit Task"}
+							{!isEditTask ? "Add Task" : "Edit Task"}
 						</button>
 					</div>
 				</form>

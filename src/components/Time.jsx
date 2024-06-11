@@ -13,8 +13,8 @@ export default function Time() {
     }, []); // Dependensi kosong berarti efek ini hanya berjalan sekali pada mount dan cleanup pada unmount
 
     return (
-        <div>
-            <p>
+        <div className=" bg-indigo-700 px-3 py-2 mt-2 rounded-md">
+            <p className="text-center">
                 {time.toLocaleString("id-ID", {
                     weekday: "long",
                     year: "numeric",

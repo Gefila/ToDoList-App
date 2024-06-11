@@ -35,7 +35,9 @@ export default function Form({
 							className="input"
 							onChange={(e) => setTaskTitle(e.target.value)}
 							value={taskTitle}
+							maxLength={20}
 						/>
+						<p className="px-2 text-sm">{taskTitle.length > 0 ? `${taskTitle.length}/20` : ""}</p>
 					</div>
 					<div className="flex flex-col">
 						<label htmlFor="description" className="text-xl">
@@ -49,10 +51,11 @@ export default function Form({
 							onChange={(e) => setDescription(e.target.value)}
 							value={description}
 						></textarea>
+						<p className="px-2 text-sm">{description.length > 0 ? `${description.length}/150` : ""}</p>
 					</div>
 					<div className="flex flex-col">
 						<label htmlFor="date" className="text-xl">
-							Date (Optional)
+							Deadline (Optional)
 						</label>
 						<input
 							id="date"
@@ -77,7 +80,7 @@ export default function Form({
 							onChange={(e) => setPriority(e.target.value)}
 							value={priority}
 						>
-							<option value="1" selected disabled>
+							<option value="" selected disabled>
 								Select Task Priority
 							</option>
 							<option value="low">Low</option>

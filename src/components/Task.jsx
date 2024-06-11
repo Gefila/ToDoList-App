@@ -30,7 +30,7 @@ export default function Task({
 		<div className="w-full mt-2 flex flex-col items-center justify-start">
 			{tasks.map((task) => (
 				<div
-					className="flex flex-col bg-blue-950 pl-3 pr-6 py-2 justify-start items-start rounded-lg border-2 relative mb-8 w-[90%]"
+					className="flex flex-col bg-gradient-to-r from-indigo-800 to-indigo-900 pl-3 pr-6 py-2 justify-start items-start rounded-lg border-2 relative mb-8 w-[90%]"
 					key={task.id}
 				>
 					<div
@@ -44,7 +44,7 @@ export default function Task({
 						{task.description}
 					</p>
 
-					<div className="flex flex-col items-center gap-2 bg-slate-800 px-2 py-3 rounded-md border-2 absolute -right-5 transform top-1/2 -translate-y-1/2">
+					<div className="flex flex-col items-center gap-2 bg-blue-950 px-2 py-3 rounded-md border-2 absolute -right-5 transform top-1/2 -translate-y-1/2">
 						{task.status ? (
 							<FaRegCheckSquare onClick={() => handleStatusTask(task.id)} />
 						) : (
@@ -75,17 +75,17 @@ export default function Task({
 									minute: "2-digit",
 									hour12: false,
 									timeZone: "Asia/Jakarta",
-									timeZoneName: "short",
+									//timeZoneName: "shortOffset",
 								})}
 							</p>
 						</div>
 						<p
-							className={`text-sm text-center text-white rounded-md p-1 border w-1/4 font-bold ${
+							className={`text-sm text-center text-white rounded-md p-1 border-2 w-1/4 font-bold ${
 								task.priority === "low"
-									? "bg-green-500"
+									? "bg-green-500 border-green-800"
 									: task.priority === "medium"
-									? "bg-amber-500"
-									: "bg-red-500"
+									? "bg-amber-500 border-amber-800"
+									: "bg-red-500 border-red-800"
 							}`}
 						>
 							{task.priority}

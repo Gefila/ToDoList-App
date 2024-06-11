@@ -14,7 +14,7 @@ function App() {
 	const [taskTitle, setTaskTitle] = useState("");
 	const [description, setDescription] = useState("");
 	const [date, setDate] = useState("");
-	const [priority, setPriority] = useState("1");
+	const [priority, setPriority] = useState("");
 
 	const [tasks, setTasks] = useState([
 		{
@@ -62,7 +62,7 @@ function App() {
 								...task,
 								task: taskTitle,
 								description,
-								date: date,
+								date: date ? date : Date.now(),
 								priority,
 								deadline: !date ? false : true
 						}
@@ -79,7 +79,7 @@ function App() {
 					description,
 					date: date ? date : Date.now(),
 					status: false,
-					priority: priority === "1" ? "low" : priority,
+					priority: priority === "" ? "low" : priority,
 					deadline: !date ? false : true
 				},
 			]);
